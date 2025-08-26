@@ -148,8 +148,61 @@
 ## 注意事项
 
 1. 权限要求：
-   - DCDN用户需要只读权限
-   - 防火墙用户需要地址薄管理权限
+
+   DCDN用户权限：
+   - 需要只读权限
+   - 最小权限策略：
+     ```json
+     {
+         "Version": "1",
+         "Statement": [
+             {
+                 "Effect": "Allow",
+                 "Action": [
+                     "dcdn:DescribeDcdnL2Vips"
+                 ],
+                 "Resource": [
+                     "*"
+                 ]
+             }
+         ]
+     }
+     ```
+
+   云防火墙用户权限：
+   - 需要地址薄完整管理权限
+   - 最小权限策略：
+     ```json
+     {
+         "Version": "1",
+         "Statement": [
+             {
+                 "Effect": "Allow",
+                 "Action": [
+                     "yundun-cloudfirewall:DescribeAddressBook",
+                     "yundun-cloudfirewall:AddAddressBook",
+                     "yundun-cloudfirewall:ModifyAddressBook"
+                 ],
+                 "Resource": [
+                     "*"
+                 ]
+             }
+         ]
+     }
+     ```
+
+   配置步骤：
+   1. 登录阿里云RAM控制台
+   2. 创建自定义权限策略
+      - 选择"创建权限策略"
+      - 选择"脚本编辑"
+      - 粘贴上述JSON策略内容
+      - 输入策略名称（如：DCDNReadOnlyAccess 和 CloudFirewallAddressBookFullAccess）
+   3. 为RAM用户授权
+      - 在用户页面选择目标RAM用户
+      - 点击"添加权限"
+      - 选择刚才创建的自定义策略
+      - 点击"确定"完成授权
 
 2. 安全建议：
    - 使用专门的子账号
